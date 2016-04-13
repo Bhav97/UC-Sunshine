@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="General">
+        <EditTextPreference
+            android:title="Location Pin Code"
+            android:key="location"
+            android:defaultValue="94043"
+            android:inputType="text"
+            android:singleLine="true"/>
+        <Preference android:title="Get location from map"
+            android:key="locate"/>
+        <ListPreference
+            android:title="Temperature Units"
+            android:entryValues="@array/val_entry"
+            android:entries="@array/entry"
+            android:enabled="true"
+            android:key="units"
+            android:defaultValue="1"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
