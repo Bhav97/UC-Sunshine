@@ -28,6 +28,9 @@
             android:label="@string/title_activity_settings"
             android:parentActivityName=".DetailActivity">
         </activity>
+        <provider
+            android:authorities="bhav.sunshine"
+            android:name=".data.WeatherProvider"/>
     </application>
 
 </manifest>

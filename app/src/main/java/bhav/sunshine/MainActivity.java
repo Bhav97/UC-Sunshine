@@ -28,19 +28,20 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-        
-    
-    //// TODO: 4/12/16 fix farenheit. plis. 
+
+    private final static String FORECASTFRAGMENT_TAG = "TAG";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if(savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment, new ForecastFragment())
+                    .add(R.id.fragment, new ForecastFragment(),FORECASTFRAGMENT_TAG)
                     .commit();
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -61,18 +62,18 @@ public class MainActivity extends AppCompatActivity {
             startActivity(preference);
             return true;
         } else if (id == R.id.action_map) {
-            openPreferredLocation();
+            openPreferredLocationInMap();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void openPreferredLocation() {
+    private void openPreferredLocationInMap() {
         SharedPreferences prefs = getSharedPreferences("sunshineprefs", Context.MODE_PRIVATE);
-
+        String location = Utility.getPreferredLocation(this);
         Uri geoLocation = Uri.parse("geo:0?0").buildUpon()
-                .appendQueryParameter("q",prefs.getString("location", "632014"))
+                .appendQueryParameter("q",location)
                 .build();
         Intent map = new Intent(Intent.ACTION_VIEW);
         map.setData(geoLocation);

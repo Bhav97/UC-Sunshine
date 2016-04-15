@@ -1,15 +1,26 @@
 package bhav.sunshine;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.location.LocationManager;
+/*
+ * Copyright (C) 2014 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.KeyEvent;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
@@ -22,51 +33,16 @@ import android.view.KeyEvent;
 public class SettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener {
 
-    private SharedPreferences prefs;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Add 'general' preferences, defined in the XML file
-        addPreferencesFromResource(R.xml.preferences);
-        prefs = getSharedPreferences("sunshineprefs", Context.MODE_PRIVATE);
+        addPreferencesFromResource(R.xml.pref_general);
 
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
-        getPreferenceScreen().findPreference("locate")
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        LocationManager locationManager = (LocationManager)
-                                getSystemService(Context.LOCATION_SERVICE);
-                        return true;
-                    }
-                });
-        getPreferenceScreen().findPreference("location")
-                .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("location",(String) newValue);
-                editor.apply();
-                return true;
-            }
-        });
-        bindPreferenceSummaryToValue(findPreference("location"));
-        getPreferenceScreen().findPreference("units")
-                .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        SharedPreferences.Editor editor = prefs.edit();
-                        Log.e("ol", String.valueOf(newValue));
-                        if((Integer) newValue == 0) {
-                            editor.putString("units", "metric" );
-                        } else editor.putString("units","imperial");
-                        editor.apply();
-                        return false;
-                    }
-                });
-        bindPreferenceSummaryToValue(findPreference("units"));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
     }
 
     /**
